@@ -30,11 +30,13 @@ namespace Guard.Day13
             //Coefficients of each variable
             int DX = (c1 * b2) - (c2 * b1); //replace col 1 with c
             int DY = (a1 * c2) - (a2 * c1); //replace col 2 with c
-            double zero = 0;
+            
             //Number of button presses
             double A_Button_Count = (double)DX / D;
             double B_Button_Count = (double)DY / D;
-            if((A_Button_Count % 1 != zero || B_Button_Count % 1 != zero)) //if button presses are not whole numbers this means there is no solution
+            double zero = 0;
+
+            if ((A_Button_Count % 1 != zero || B_Button_Count % 1 != zero)) //if button presses are not whole numbers this means there is no solution
                 return 0;
 
             if (A_Button_Count > 100 || B_Button_Count > 100 || A_Button_Count < 0 || B_Button_Count < 0) 
@@ -43,6 +45,33 @@ namespace Guard.Day13
 
         }
 
+        public long Solve2()
+        {
+            int a1 = Instruction1.X_Addition; int b1 = Instruction2.X_Addition;
+            int a2 = Instruction1.Y_Addition; int b2 = Instruction2.Y_Addition;
+            long badNumber = 10000000000000; long c1 = Prize.Item1 + badNumber; long c2 = Prize.Item2 + badNumber;
+
+            int D = (a1 * b2) - (a2 * b1); //Determinant of coeff matrix
+            if (D == 0) return 0;
+
+            //Coefficients of each variable
+            long DX = (c1 * b2) - (c2 * b1); //replace col 1 with c
+            long DY = (a1 * c2) - (a2 * c1); //replace col 2 with c
+
+            //Number of button presses
+            if(DX/(double)D % 1 != 0 || DY/(double)D % 1 != 0) return 0;
+            long A_Button_Count = DX / D;
+            long B_Button_Count = DY / D;
+            double zero = 0;
+
+            if ((A_Button_Count % 1 != zero || B_Button_Count % 1 != zero)) //if button presses are not whole numbers this means there is no solution
+                return 0;
+
+            if (A_Button_Count < 0 || B_Button_Count < 0)
+                return 0;
+            return (long)(3 * A_Button_Count + B_Button_Count);
+        }
+        
         private void ParseInstuctions(string[] instructions)
         {
             Instruction1 = new (instructions[0],3);
